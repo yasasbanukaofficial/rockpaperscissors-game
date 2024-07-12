@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROCK PAPER AND SCISSORS</title>
+    <link rel="stylesheet" href="rockpaperscissors.css">
+</head>
+<body>
+
+    <h1>Rock Paper Scissors</h1>
+    <div class="buttons">
+        <button class="js-round-button-rock" onclick="
+            computerMoveGame();
+            playermove('rock')
+        ">🪨</button>
+        <button class="js-round-button-paper" onclick="
+        computerMoveGame();
+        playermove('paper')
+        ">📃</button>
+        <button class="js-round-button-scissors" onclick="
+        computerMoveGame();
+        playermove('scissors')
+        ">✂️</button>
+    </div>
+    <div class="finalresult">
+        <p class="js-score"></p>
+        <p class="js-moves"></p>
+    </div>
+    <div class="score-result">
+        <p class="js-finalResult">Play the Game</p>
+        <button class="js-restButton" onclick="
+        resetScore()
+        finalResult()
+        ">Reset Score</button>
+    </div>
+    
+    <script>
+
+        const rockButton = document.querySelector('.js-round-button-rock');
+        const paperButton = document.querySelector('.js-round-button-paper');
+        const scissorsButton = document.querySelector('.js-round-button-scissors');
+
+        let score = JSON.parse(localStorage.getItem('score')) || {
+            wins: 0,
+            loses: 0,
+            ties: 0,
+        }
+
+        scoreUpdate()
+
+        
+        let computerResult = '';
+        function computerMoveGame() {
+            let computerMove = Math.random();
+
+            if (computerMove >= 0 && computerMove < 1 / 3 ) {
+                computerResult = 'rock'
+            } else if (computerMove >= 1 / 3 && computerMove < 2 / 3) {
+                computerResult = 'paper';
+            } else if (computerMove >= 2 / 3 && computerMove < 1 ) {
+                computerResult = 'scissors';
+            } else {
+                computerResult = 'error'
+            }
+
+            return computerResult
+        }
+        
+
+        let playerMoveResult = '';
+        function playermove(playergame) {
+            if (playergame === 'rock') {
+                if (computerResult === 'rock'){
+                    document.querySelector('.js-score')
+                        .innerHTML = 'Thats a Tie'
+                } else if (computerResult === 'paper') {
+                    document.querySelector('.js-score')
+                        .innerHTML = 'You Lose'
+                } else if (computerResult === 'scissors'){
+                    document.querySelector('.js-score')
+                        .innerHTML = 'You Win'
+                }       
+            } else if (playergame === 'paper') {
+                if (computerResult === 'rock'){
+                    document.querySelector('.js-score')
+                        .innerHTML = 'Thats a Tie'
+                } else if (computerResult === 'paper') {
+                    document.querySelector('.js-score')
+                        .innerHTML = 'You Lose'
+                } else if (computerResult === 'scissors'){
+                    document.querySelector('.js-score')
+                        .innerHTML = 'You Win'
+                }       
+            } else if (playergame === 'scissors') {
+                if (computerResult === 'rock'){
+                    document.querySelector('.js-score')
+                        .innerHTML = 'Thats a Tie'
+                } else if (computerResult === 'paper') {
+                    document.querySelector('.js-score')
+                        .innerHTML = 'You Lose'
+                } else if (computerResult === 'scissors'){
+                    document.querySelector('.js-score')
+                        .innerHTML = 'You Win'
+                }       
+                
+            }
+
+            localStorage.setItem('score', JSON.stringify(score));
+            scoreUpdate();
+            finalResult();
+            showMoves();
+            
+        }
+
+        
+
+
+        function scoreUpdate() {
+            if (document.querySelector('.js-score').innerHTML === 'You Win') {
+            score.wins++
+            } else if (document.querySelector('.js-score').innerHTML === 'You Lose') {
+                score.loses++
+            } else if (document.querySelector('.js-score').innerHTML === 'Thats a Tie') {
+                score.ties++
+            }
+            
+            
+        }
+
+        function finalResult() {
+            const displayResult = document.querySelector(`.js-finalResult`).innerHTML = `Wins: ${score.wins} Loses: ${score.loses} TIes: ${score.ties}`
+        }
+
+        function resetScore() {
+            score.wins = 0,
+            score.loses = 0,
+            score.ties = 0,
+
+            localStorage.removeItem('score');
+        }
+
+        function showMoves() {
+            document.querySelector('.js-moves').innerHTML = `You ${playergame} ${computerResult} Computer`
+        }
+
+        
+    </script>
+    
+</body>
+</html>
